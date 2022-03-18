@@ -34,4 +34,15 @@ class Show_model extends CI_Model
         }
         return [];
     }
+
+    public function get_all_shows($params)
+    {
+        $this->db->select('shows.id, movies.name as movie_name, shows.show_name, shows.show_time, shows.seat_count, screens.s_screen_name as screen_name');
+        $this->db->from('shows');
+        $this->db->join('movies', 'movies.id = shows.movie_id');
+        $this->db->join('screens', 'screens.id = shows.screen_id');
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

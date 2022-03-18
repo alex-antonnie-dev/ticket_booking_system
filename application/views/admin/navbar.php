@@ -12,6 +12,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="<?php echo site_url('admin/shows');?>">Shows</a>
         </li>
+        <li class='nav-item'>
+          <a class='nav-link active' aria-current='page' href='<?php echo site_url('admin/users');?>'>Users</a>
+        </li>
       </ul>
       <span class="navbar-text">
       Welcome <?php echo isset($_SESSION['user']) ? $_SESSION['user']['name'] : 'Guest'; ?>

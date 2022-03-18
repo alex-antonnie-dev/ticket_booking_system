@@ -36,4 +36,14 @@ class User_model extends CI_Model
             return $this->db->affected_rows();
         }
     }
+
+    public function get_all_users($params)
+    {
+        $this->db->select('id, name, email');
+        $this->db->from('users');
+        $this->db->where('users.role_type', '2');
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

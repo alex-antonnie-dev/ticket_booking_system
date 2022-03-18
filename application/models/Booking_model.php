@@ -32,12 +32,20 @@ class Booking_model extends CI_Model
     public function get_total_seats_booked($param)
     {
         $show_id = $param['show_id']??'';
+        $user_id = $param['user_id']??'';
 
-        if($show_id)
+        if($show_id || $user_id)
         {
             $this->db->select('sum(booked_count) as total_seats_booked');
             $this->db->from('booking_history');
-            $this->db->where('show_id', $show_id);
+            if($show_id)
+            {
+                $this->db->where('show_id', $show_id);
+            }
+            if($user_id)
+            {
+                $this->db->where('user_id', $user_id);
+            }
             $row = $this->db->get()->row();
             if (isset($row)) {
                 return $row->total_seats_booked;
