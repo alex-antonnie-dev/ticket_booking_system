@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/kolkata');
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -23,8 +23,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://ticket-booking-system.com/';
-
+// $config['base_url'] = 'http://54.179.206.115/ticket_booking_system/';//'http://ticket-booking-system.com/';
+include_once "credentials.php";
+$protocol               = 'http://';
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') 
+{
+    $protocol           = 'https://';
+}
+if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+    $protocol           = 'https://';
+}
+$root                   = $protocol.$_SERVER['HTTP_HOST'];
+$root                   .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$config['base_url']     = $root;
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -531,4 +542,4 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-include_once('credentials.php');
+// include_once('credentials.php');

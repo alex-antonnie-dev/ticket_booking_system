@@ -6,6 +6,18 @@ class Users extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $user = $this->session->userdata('user');
+        if(!empty($user) && isset($user['id']))
+        {
+            if($user['role'] == '2')
+            {
+                redirect('home');exit;
+            }
+        }
+        else
+        {
+            redirect('login');exit;
+        }
         $this->load->model(array('User_model','Booking_model'));
     }
 
