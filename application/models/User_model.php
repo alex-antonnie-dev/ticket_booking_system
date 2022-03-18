@@ -19,4 +19,21 @@ class User_model extends CI_Model
         }
         return $result;
     }
+
+    public function save($data)
+    {
+        $result = array();
+        $id     = $data['id']?? '';
+        if($id)
+        {
+            $this->db->where('id', $id);
+            $this->db->update('users', $data);
+            return true;
+        }
+        else
+        {
+            $this->db->insert('users', $data);
+            return $this->db->affected_rows();
+        }
+    }
 }

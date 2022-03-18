@@ -13,7 +13,6 @@ class Login extends CI_Controller
 
     public function index()
     {
-        // echo '<pre>';print_r($_POST);die;
         if($this->input->post('email'))
         {
             $email      = $this->input->post('email')??'';
@@ -75,6 +74,37 @@ class Login extends CI_Controller
 
     public function register()
     {
-        $this->load->view('register');
+        if($this->input->post('fname'))
+        {
+            $name       = $this->input->post('fname')??'';
+            $email      = $this->input->post('email')??'';
+            $password   = $this->input->post('password')??'';
+    
+            $this->form_validation->set_rules('fname', 'Name', 'required');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
+            $this->form_validation->set_rules('password', 'Password', 'required');
+    
+            if($this->form_validation->run() == FALSE)
+            {
+                $this->load->view('register');
+            }
+            else
+            {
+                $data = array(
+                    'name'      => $name,
+                    'email'     => $email,
+                    'password'  => password_hash($password, PASSWORD_DEFAULT),
+                    'role_type' => '2'
+                );
+    
+                $this->User_model->save($data);
+                $this->session->set_flashdata('success', 'Register success');
+                redirect('login');
+            }
+        }
+        else
+        {
+            $this->load->view('register');
+        }
     }
 }
