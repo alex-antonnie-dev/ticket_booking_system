@@ -25,7 +25,7 @@ class Home extends CI_Controller
         public function index()
         {
             $data['title']      = 'Home';
-            $shows_list         = $this->Show_model->get_todays_shows();
+            $shows_list         = $this->Show_model->get_todays_shows(array());
             // $booking_history    = $this->Show_model->get_booking_history();
             $data['shows']      = $shows_list;
             
