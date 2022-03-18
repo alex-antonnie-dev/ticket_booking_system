@@ -44,3 +44,8 @@
 .disabled:hover{
     cursor: default;
 }
+
+.error-msg{
+    color: #f00;
+    font-size: 12px;
+}

@@ -51,35 +51,33 @@ class Home extends CI_Controller
             $response           = array();
             $response['status'] = 'success';
             $show_id            = $this->input->post('show_id')??'';
+            $show_id            = preg_match('/^[0-9]+$/', $show_id)?$show_id:'';
             $seats              = $this->input->post('seats')??'';
-            // $seats              = explode(',', $seats);
+            
             $user_id            = $this->session->userdata('user')['id'];
             $show_details       = $this->Show_model->get_show_details(array('id' => $show_id));
-            $screen_id          = $show_details['screen_id'];
-            // $booking_history    = $this->Booking_model->get_booking_history(array('show_id' => $show_id));
-            // $booking_history    = array_column($booking_history, 'seats_booked');
-            // echo '<pre>';print_r($booking_history);
-            // $booking_history    = array_flip($booking_history);
-            // $booking_history    = array_flip($booking_history);
-            // $booking_history    = array_keys($booking_history);
-            // $booking_history    = array_map('intval', $booking_history);
-            // $booking_history    = array_unique($booking_history);
-            // $booking_history    = array_values($booking_history);
-
-            // $seats              = array_diff($seats, $booking_history);
-            // $seats              = array_values($seats);
-            // echo '<pre>';print_r($seats);
-            // print_r($booking_history);die;
-            if(!empty($seats))
+            
+            if(!$show_id)
             {
+                $response['status'] = 'error';
+                $response['message'] = 'Something went wrong! Please try again.';
+                echo json_encode($response);
+                exit;
+            }
+            
+            if(!empty($seats) && !empty($show_details))
+            {
+                $screen_id          = $show_details['screen_id'];
                 $data = array(
                     'show_id'       => $show_id,
                     'user_id'       => $user_id,
                     'screen_id'    => $screen_id,
                     'seats_booked'  => implode(',', $seats),
+                    'booked_count'  => count($seats),
                     'booked_date'   => date('Y-m-d H:i:s')
                 );
                 $this->db->insert('booking_history', $data);
+                $response['message'] = count($seats) > 1 ? count($seats).' seats booked successfully' : count($seats).' seat booked successfully';
             }
             else
             {

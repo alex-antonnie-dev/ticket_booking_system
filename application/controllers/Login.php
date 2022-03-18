@@ -24,12 +24,12 @@ class Login extends CI_Controller
             {
                 $data_session = array(
                     'id'        => $user['id'],
-                    'nama'      => $user['name'],
+                    'name'      => $user['name'],
                     'email'     => $user['email'],
                     'role'      => $user['role_type'],
                     'status'    => "login"
                 );
-
+                
                 if(password_verify($password, $user['password']))
                 {
                     $this->session->set_userdata(array('user' => $data_session));
@@ -52,6 +52,7 @@ class Login extends CI_Controller
             }
             else
             {
+                $this->session->set_flashdata('error', 'Invalid email or password');
                 $this->load->view('login');
             }
         }
@@ -61,10 +62,6 @@ class Login extends CI_Controller
         }
     }
 
-    public function check_login()
-    {
-        
-    }
 
     public function logout()
     {
