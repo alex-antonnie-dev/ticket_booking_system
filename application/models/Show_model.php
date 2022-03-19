@@ -26,9 +26,11 @@ class Show_model extends CI_Model
         $id = $params['id']??'';
         if($id)
         {
-            $this->db->select('*');
+            $this->db->select('shows.*, screens.s_screen_name as screen_name, movies.name as movie_name');
             $this->db->from('shows');
-            $this->db->where('id', $id);
+            $this->db->join('screens', 'screens.id = shows.screen_id');
+            $this->db->join('movies', 'movies.id = shows.movie_id');
+            $this->db->where('shows.id', $id);
             $query = $this->db->get();
             return $query->row_array();
         }

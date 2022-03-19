@@ -42,8 +42,9 @@ class Home extends CI_Controller
             $response['status'] = 'success';
             $show_id            = $this->input->post('show_id')??'';
 
-            $booking_history    = $this->Booking_model->get_booking_history(array('show_id' => $show_id));
-            $response['data']   = $booking_history;
+            $booking_history        = $this->Booking_model->get_booking_history(array('show_id' => $show_id));
+            $response['data_show']  = $this->Show_model->get_show_details(array('id' => $show_id));
+            $response['data']       = $booking_history;
             echo json_encode($response);
             exit;
         }

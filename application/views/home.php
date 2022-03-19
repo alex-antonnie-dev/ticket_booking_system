@@ -3,8 +3,8 @@
 <?php include_once('navbar.php'); ?>
 
 <div class="container">
-    <div class="row">
-        <div class='col-md-3 mt-5'>
+    <div class="row mt-5">
+        <div class='col-md-3 '>
             <select class='form-control' name='shows_list' id='shows_list'>
                 <option value='0'>Select Show</option>
                     <?php
@@ -15,6 +15,36 @@
                     }
                     ?>
             </select>
+        </div>
+        <div class='col-md-3'>
+            <div class='card bg-secondary text-white'>
+            <div class='card-header'>
+                    <h5>Movie</h5>
+                </div>
+                <div class='card-body'>
+                    <h5><span class='badge bg-dark' id='movie_name'></span></h5>
+                </div>
+            </div>
+                </div>
+        <div class='col-md-3'>
+            <div class='card bg-secondary text-white'>
+                <div class='card-header'>
+                    <h5>Screen</h5>
+                </div>
+                <div class='card-body'>
+                    <h5><span class='badge bg-dark' id='screen_name'></span></h5>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-3'>
+            <div class='card bg-secondary text-white'>
+                <div class='card-header'>
+                    <h5>Show Time</h5>
+                </div>
+                <div class='card-body'>
+                    <h5><span class='badge bg-dark' id='show_time'></span></h5>
+                </div>
+            </div>
         </div>
     </div>
     <br/>
@@ -42,7 +72,11 @@
 
 $('#shows_list').change(function(){
     let show_id = $(this).val();
-    showList(show_id);
+    if(show_id != 0){
+        showList(show_id);
+    } else {
+        hideData();
+    }
 });
 let showList = function(show_id){
     if(show_id){
@@ -56,6 +90,15 @@ let showList = function(show_id){
                 let data = JSON.parse(response);
                 if(data.status == 'success'){
                     let booking_history = data.data;
+                    let show_details    = data.data_show;
+                    console.log(show_details);
+                    if(Object.keys(show_details).length > 0){
+                        $('#movie_name').text(show_details['movie_name']);
+                        $('#screen_name').text(show_details['screen_name']);
+                        $('#show_time').text(show_details['show_time']);
+                    } else {
+                        hideData();
+                    }
                     if(booking_history.length > 0){
                         $('#seat_details .seat-box').removeClass('seat-box-booked');
                         $('#seat_details .seat-box').removeClass('seat-box-selected');
@@ -78,6 +121,13 @@ let showList = function(show_id){
             }
         });
     }
+}
+
+let hideData = function(){
+    $('#seat_details').addClass('no-display');
+    $('#movie_name').text('');
+    $('#screen_name').text('');
+    $('#show_time').text('');
 }
 
 $(document).on('click', '#save_tickets', function(){

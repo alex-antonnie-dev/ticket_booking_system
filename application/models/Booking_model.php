@@ -6,9 +6,13 @@ class Booking_model extends CI_Model
         $show_id = $param['show_id']??'';
         if($show_id)
         {
-            $this->db->where('show_id', $show_id);
+            $this->db->where('booking_history.show_id', $show_id);
         }
-        $query = $this->db->get('booking_history');
+        $this->db->select('booking_history.*, screens.s_screen_name as screen_name, shows.show_time');
+        $this->db->from('booking_history');
+        $this->db->join('shows', 'shows.id = booking_history.show_id');
+        $this->db->join('screens', 'screens.id = shows.screen_id');
+        $query = $this->db->get();
         return $query->result_array();
     }
 
