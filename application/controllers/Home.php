@@ -26,10 +26,13 @@ class Home extends CI_Controller
         {
             $data['title']      = 'Home';
             $shows_list         = $this->Show_model->get_todays_shows(array());
+            echo $this->db->last_query();
+            print_r($shows_list);
             // $booking_history    = $this->Show_model->get_booking_history();
             $data['shows']      = $shows_list;
             
             $data['seats']      = range(1,10);
+            echo '<pre>';print_r($data);die;
             $this->load->view('home', $data);
         }
 
