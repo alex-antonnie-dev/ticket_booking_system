@@ -57,9 +57,12 @@ let showList = function(show_id){
                 if(data.status == 'success'){
                     let booking_history = data.data;
                     if(booking_history.length > 0){
+                        $('#seat_details .seat-box').removeClass('seat-box-booked');
+                        $('#seat_details .seat-box').removeClass('seat-box-selected');
                         $.each(booking_history, function(index, value){
                             let seats = value.seats_booked.split(',');
                             console.log(seats);
+                            
                             if(seats.length > 0){
                                 $.each(seats, function(index, value){
                                     $('#seat-box-'+value).addClass('seat-box-booked');
